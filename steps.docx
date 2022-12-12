@@ -1,0 +1,45 @@
+# Follow the below commands to deploy the app in EKS Cluster and Redis Deployment in K8s.
+
+git clone https://github.com/srinivasanmsk/DevOps-Capstone.git
+
+cd Devops-Capstone/Terraform
+
+terraform init
+
+terraform apply -auto-approve
+
+cd ../K8s
+
+eksctl create cluster -f eks-cluster-config.yaml
+
+kubectl create -f ./Upg-loadme-app/deployment.yaml
+
+kubectl create -f ./Upg-loadme-app/ingress.yaml
+
+kubectl create -f ./HPA/upg-loadme-hpa.yaml
+
+kubectl create ./Redis-Deployment/redis-persistent-volume.yaml
+
+kubectl create ./Redis-Deployment/redis-persistent-volume-claim.yaml
+
+kubectl create ./Redis-Deployment/redis-configmap.yaml
+
+kubectl create ./Redis-Deployment/redis-stateful-set.yaml
+
+kubectl create ./Redis-Deployment/redis-deployment.yaml
+
+kubectl create ./Redis-Deployment/redis-service.yaml
+
+kubectl create -f ./HPA/hpa.yaml
+
+#--------------------------------------------------------------------------
+# Clearing the resources
+
+kubectl delete all --all -n demo
+
+eksctl delete cluster -f eks-cluster-config.yaml
+
+cd ../Terraform
+
+terraform destroy -auto-approve
+
