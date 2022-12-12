@@ -92,5 +92,20 @@
         maxSize: 2
         subnets:
           - my-public-201-a
-        
-    
+      - name: pvt-201-a-2 # New nodegroup with taint
+        labels: { role: workers }
+        tags:
+          k8s.io/cluster-autoscaler/enabled: "true"
+          k8s.io/cluster-autoscaler/my-eks-201: "shared"
+        instancesDistribution:
+          instanceTypes:
+            - t2.medium
+        desiredCapacity: 1
+        minSize: 0
+        maxSize: 5
+        subnets:
+          - my-private-201-a
+        taints:
+          - key: "special"
+            value: "true"
+            effect: "NoSchedule"
