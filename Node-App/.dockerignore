@@ -1,0 +1,4 @@
+*.md
+.git
+Jenkinsfile
+node_modules
